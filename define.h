@@ -37,4 +37,6 @@
 #define wmb()   asm volatile("sfence" ::: "memory")
 #endif
 
+#define cpu_pause()   __asm__ __volatile__("pause;")
+
 #endif // __MJ_DEFINE_H__
