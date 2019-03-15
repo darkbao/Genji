@@ -7,8 +7,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <sys/time.h>
 #include <exception>
 #include "LFQueue.h"
+
+static const uint32_t MAX_DATA_NUM = 1024*1024;
 
 struct data
 {
@@ -17,28 +20,34 @@ struct data
 
 void* producer(void* arg)
 {
-	printf("producer thread begin...\n");
+	printf("producer thread running...\n");
 	mj::LFQueue* pQueue = (mj::LFQueue*)arg;
-	for (uint32_t i = 0; ; ++i) {
+	struct  timeval start;
+    struct  timeval end;
+    gettimeofday(&start, NULL);
+	for (uint32_t i = 0; i < MAX_DATA_NUM; ) {
 		data newData = {i};
-		uint64_t len = pQueue->putData(&newData, sizeof(data));
-		// if (len == sizeof(data)) {
-		// 	printf("-->put newData[%u]\n", newData.index);
-		// }
+		uint64_t len = pQueue->putData((char*)&newData, sizeof(data));
+		if (len == sizeof(data)) {
+			++i;
+		}
 	}
+	gettimeofday(&end, NULL);
+	unsigned long diff = 1000000 * (end.tv_sec-start.tv_sec) + (end.tv_usec-start.tv_usec);
+    printf("put %u data total in [%ld]us\n", MAX_DATA_NUM, diff);
 	return NULL;
 }
 
 void* consumer(void* arg)
 {
-	printf("consumer thread begin...\n");
+	printf("consumer thread running...\n");
 	mj::LFQueue* pQueue = (mj::LFQueue*)arg;
-	for ( ; ; ) {
+	for (uint32_t i = 0; i < MAX_DATA_NUM; ) {
 		data newData;
-		uint64_t len = pQueue->getData(&newData, sizeof(data));
-		// if (len == sizeof(data)) {
-		// 	printf("<--get newData[%u]\n", newData.index);
-		// }
+		uint64_t len = pQueue->getData((char*)&newData, sizeof(data));
+		if (len == sizeof(data)) {
+			++i;
+		}
 	}
 	return NULL;
 }

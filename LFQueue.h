@@ -16,13 +16,13 @@ namespace mj
 	public:
 		LFQueue(uint64_t size);
 		~LFQueue();
-		uint64_t putData(const void* buffer, uint64_t length);
-		uint64_t getData(void* buffer, uint64_t length);
+		uint64_t putData(const char* buffer, uint64_t length);
+		uint64_t getData(char* buffer, uint64_t length);
 		inline uint64_t size() const { return (m_in - m_out); }
 	protected:
 		inline bool is_power_of_2(uint64_t n) { return (n != 0 && ((n & (n - 1)) == 0)); }
-		uint64_t putData_locked(const void* buffer, uint64_t length);
-		uint64_t getData_locked(void* buffer, uint64_t length);
+		uint64_t putData_locked(const char* buffer, uint64_t length);
+		uint64_t getData_locked(char* buffer, uint64_t length);
 	private:
 		uint8_t*		m_pBuffer;  /* the buffer holding the data */
 		uint64_t		m_size;    	/* the size of the allocated buffer */

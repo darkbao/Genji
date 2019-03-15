@@ -32,25 +32,25 @@ namespace mj
 		}
 	}
 
-	uint64_t LFQueue::putData(const void* buffer, uint64_t length)
+	uint64_t LFQueue::putData(const char* buffer, uint64_t length)
 	{
 		uint64_t len = 0;
-		//m_lock.lock();
+		m_lock.lock();
 		len = putData_locked(buffer, length);
-		//m_lock.unlock();
+		m_lock.unlock();
 		return len;
 	}
 
-	uint64_t LFQueue::getData(void* buffer, uint64_t length)
+	uint64_t LFQueue::getData(char* buffer, uint64_t length)
 	{
 		uint64_t len = 0;
-		//m_lock.lock();
+		m_lock.lock();
 		len = getData_locked(buffer, length);
-		//m_lock.unlock();
+		m_lock.unlock();
 		return len;
 	}
 
-	uint64_t LFQueue::putData_locked(const void* buffer, uint64_t len)
+	uint64_t LFQueue::putData_locked(const char* buffer, uint64_t len)
 	{
 		uint64_t l = 0;
     	len = std::min(len, m_size - m_in + m_out);
@@ -65,7 +65,7 @@ namespace mj
 		return len;
 	}
 
-	uint64_t LFQueue::getData_locked(void* buffer, uint64_t len)
+	uint64_t LFQueue::getData_locked(char* buffer, uint64_t len)
 	{
  		uint64_t l = 0;
  		len = std::min(len, m_in - m_out);
