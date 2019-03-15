@@ -7,7 +7,7 @@
 #ifndef __MJ_LFQUEUE_H__
 #define __MJ_LFQUEUE_H__
 #include <stdint.h>
-#include "spinLock.hpp"
+#include "lock.hpp"
 
 namespace mj
 {
