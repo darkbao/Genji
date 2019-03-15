@@ -18,7 +18,7 @@ struct data
 	//uint64_t remain;
 };
 
-static const uint64_t MAX_DATA_NUM = 16ull*(1024*1024*1024)/sizeof(data);
+static const uint64_t MAX_DATA_NUM = (1024*1024*1024)/sizeof(data);
 static const int32_t PRODUCER_CPU_ID = 0;
 static const int32_t CONSUMER_CPU_ID = 1;
 
